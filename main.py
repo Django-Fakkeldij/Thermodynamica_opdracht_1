@@ -1,18 +1,11 @@
 import numpy as np
 
 from config import *
-
-
-def kpa_to_bar(n):
-    return n / 100_000
-
-
-def bar_to_kpa(n):
-    return n * 100_000
+from util import *
 
 
 def vraag1():
-    return P_env + kpa_to_bar((m_piston * g) / (np.pi * (D_piston / 2) ** 2))  # bar
+    return P_env + kpa_to_bar((m_piston * g) / A)  # bar
 
 
 def vraag2():
@@ -36,7 +29,6 @@ def vraag4():
 
 def vraag5():
     m = vraag2() / 1000  # kg
-    A = np.pi * (D_piston / 2) ** 2  # m^2
     p1 = bar_to_kpa(vraag4())  # kPa
     p2 = bar_to_kpa(vraag1())  # kPa
     kappa = 1.4
@@ -45,11 +37,9 @@ def vraag5():
 
 def vraag6():
     p = bar_to_kpa(vraag1())  # kPa
-    A = np.pi * (D_piston / 2) ** 2  # m^2
     V = vraag5() * A  # m^3
     m = vraag2() / 1000  # kg
     return (p * V) / (R * m) - celcius_to_K  # C
 
 
-# Hallo Caspar
 print(vraag6())

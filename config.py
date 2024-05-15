@@ -1,3 +1,5 @@
+import numpy as np
+
 celcius_to_K = 273.15  # deg C
 T_env = 16.0 + celcius_to_K  # K
 P_env = 1.013  # bar
@@ -13,3 +15,4 @@ c_w = 20  # kg / s
 
 # Derived
 R = 8314 / M_air
+A = np.pi * (D_piston / 2) ** 2  # m^2
