@@ -1,3 +1,5 @@
+import time
+
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.integrate import odeint, trapz
@@ -23,21 +25,25 @@ def calc_p(h, T):
     return (R * T) / V  # kPa
 
 
-def calc_dT(Q):
-    return (c * m_piston) / Q  # delta K
+@np.vectorize
+def calc_dT(t):
+    if t == 0:
+        return (c * m_piston) / Q_ex  # delta K
+    return 0
 
 
 def functieVoorDeZuiger(state, t):
-    T, Q, int_Q, v, h = state
+    T, v, h = state
 
     a = F_tot(calc_p(h, T), v)
-    dT = calc_dT(Q)
+    dT = calc_dT(t)
 
-    ddQ = 0
-    dQ = 0
-    return dT, ddQ, dQ, a, v
+    return dT, a, v
 
 
 vraag_6_resultaat = 1329.6463680447187 + celcius_to_K  # K
-state0 = (vraag_6_resultaat, Q_ex, 0, 0, h0)
+state0 = (vraag_6_resultaat, 0, h0)
 resultaat = odeint(functieVoorDeZuiger, state0, t)
+res_T, res_v, res_h = resultaat.T
+
+plt.plot(t, res_h)
