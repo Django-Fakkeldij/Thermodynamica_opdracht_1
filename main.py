@@ -16,7 +16,6 @@ def vraag2():
 
 def vraag3():
     m = vraag2() / 1000  # kg
-    c = c_p / 1.4  # J / kg / K
     return (T_env - celcius_to_K) + Q_ex / (m * c)  # deg C
 
 

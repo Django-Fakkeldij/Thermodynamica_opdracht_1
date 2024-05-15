@@ -16,3 +16,4 @@ c_w = 20  # kg / s
 # Derived
 R = 8314 / M_air
 A = np.pi * (D_piston / 2) ** 2  # m^2
+c = c_p / 1.4  # J / kg / K
