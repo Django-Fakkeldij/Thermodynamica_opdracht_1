@@ -1,5 +1,3 @@
-import time
-
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.integrate import odeint, trapz
@@ -46,4 +44,8 @@ state0 = (vraag_6_resultaat, 0, h0)
 resultaat = odeint(functieVoorDeZuiger, state0, t)
 res_T, res_v, res_h = resultaat.T
 
-plt.plot(t, res_h)
+fig, ax = plt.subplots(1, 1)
+
+ax.plot(t, res_h)
+
+plt.show()
