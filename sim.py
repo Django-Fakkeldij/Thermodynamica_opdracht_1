@@ -16,13 +16,22 @@ polytrop_c = calc_polytrop_const(p0, V0)
 state0 = (0, h0)
 
 
-def F_tot(p, v):
+def F_tot_no_resist(p, v):
     F_g = m_piston * g  # N
     # F_f = c_w * v  # N
     F_pressure_out = bar_to_kpa(P_env) * A  # N
     F_pressure_in = p * A  # N
 
     return -F_g - F_pressure_out + F_pressure_in  # N
+
+
+def F_tot(p, v):
+    F_g = m_piston * g  # N
+    F_f = c_w * v  # N
+    F_pressure_out = bar_to_kpa(P_env) * A  # N
+    F_pressure_in = p * A  # N
+
+    return -F_g - F_f - F_pressure_out + F_pressure_in  # N
 
 
 def calc_p(V):
@@ -36,7 +45,15 @@ def calc_dT(t):
     return 0
 
 
-def functieVoorDeZuiger(state, t):
+def pistonNoResist(state, t):
+    v, h = state
+    V = A * h  # m^3
+    p = calc_p(V)
+    a = F_tot_no_resist(p, v)
+    return a, v
+
+
+def piston(state, t):
     v, h = state
     V = A * h  # m^3
     p = calc_p(V)
@@ -45,11 +62,18 @@ def functieVoorDeZuiger(state, t):
 
 
 t = np.linspace(0, 0.5, 20_000)
-resultaat = odeint(functieVoorDeZuiger, state0, t)
-res_v, res_h = resultaat.T
+res_no_resist = odeint(pistonNoResist, state0, t)
+res_no_resist_v, res_no_resist_h = res_no_resist.T
 
-fig, ax = plt.subplots(1, 1)
+print("max h - no resist: ", np.max(res_no_resist_h))
 
-ax.plot(t, res_h)
+res = odeint(piston, state0, t)
+res_v, res_h = res.T
+
+print("max h - resist: ", np.max(res_h))
+fig, ax = plt.subplots(1, 2)
+
+ax[0].plot(t, res_no_resist_h)
+ax[1].plot(t, res_h)
 
 plt.show()
