@@ -64,16 +64,21 @@ def piston(state, t):
 t = np.linspace(0, 0.5, 20_000)
 res_no_resist = odeint(pistonNoResist, state0, t)
 res_no_resist_v, res_no_resist_h = res_no_resist.T
+res_no_resist_p = calc_p(res_no_resist_h * A)
 
 print("max h - no resist: ", np.max(res_no_resist_h))
+print("min p - no resist (bar): ", kpa_to_bar(np.min(res_no_resist_p)))
 
 res = odeint(piston, state0, t)
 res_v, res_h = res.T
+res_p = calc_p(res_h * A)
 
-print("max h - resist: ", np.max(res_h))
-fig, ax = plt.subplots(1, 2)
+print("where t = 0.5, h - resist: ", res_h[-1])
+print("max v - resist (WRONG?): ", np.max(res_v))
+fig, ax = plt.subplots(2, 2)
 
-ax[0].plot(t, res_no_resist_h)
-ax[1].plot(t, res_h)
+ax[0][0].plot(t, res_no_resist_h)
+ax[0][1].plot(t, res_no_resist_p)
+ax[1][0].plot(t, res_h)
 
 plt.show()
