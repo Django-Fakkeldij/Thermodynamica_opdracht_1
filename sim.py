@@ -27,14 +27,17 @@ def calc_dT(Q):
     return (c * m_piston) / Q  # delta K
 
 
-def functieVoorDeZuiger(state):
-    T, Q, v, h = state
+def functieVoorDeZuiger(state, t):
+    T, Q, int_Q, v, h = state
 
     a = F_tot(calc_p(h, T), v)
     dT = calc_dT(Q)
 
+    ddQ = 0
     dQ = 0
-    return dT, dQ, a, v
+    return dT, ddQ, dQ, a, v
 
 
-resultaat = odeint(functieVoorDeZuiger, (), t)
+vraag_6_resultaat = 1329.6463680447187 + celcius_to_K  # K
+state0 = (vraag_6_resultaat, Q_ex, 0, 0, h0)
+resultaat = odeint(functieVoorDeZuiger, state0, t)
