@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.integrate import odeint, trapz
+from scipy.integrate import odeint
 
+from base import vraag4
 from config import *
 from util import *
 
@@ -10,7 +11,7 @@ def calc_polytrop_const(p, V):
     return p * (V / m_piston) ** n
 
 
-p0 = vraag4_resultaat = bar_to_kpa(11.208200882187015)  # kPa
+p0 = bar_to_kpa(vraag4())  # kPa
 V0 = h0 * A
 polytrop_c = calc_polytrop_const(p0, V0)
 state0 = (0, h0)
